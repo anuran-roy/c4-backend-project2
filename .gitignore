@@ -1,5 +1,6 @@
-.idea
-bin
-lib
-include
-pyvenv.cfg
+env
+.vscode
+*.pyc
+*.pyo
+**/__pycache__/
+__pycache__/

@@ -2,29 +2,32 @@ from pydantic import BaseModel # Base class for request bodies
 from typing import Optional
 
 class City(BaseModel):
-    title: str
-    description: str
-    published: Optional[bool]
+    cityid: int
+    cityname: str
+    statename: str
 
-class ShowBlog(BaseModel):
-    title: str
-    description: str
-    published: Optional[bool]
-class ShowList(BaseModel):
+class User(BaseModel):
+    userid: int
+    name: str
+    contactnum: str
+    email: str
+
+class Address(BaseModel):
     title: str
 
     class Config():
         orm_mode = True
 
-class User(BaseModel):
-    name: str
-    username: str
-    email: str
-    password: str
+# class User(BaseModel):
+#     name: str
+#     username: str
+#     email: str
+#     password: str
 
 class UserProfile(BaseModel):
+    # userId: int
     name: str
-    username: str
+    contactnum: str
     email: str
 
     class Config():

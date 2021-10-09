@@ -1,11 +1,13 @@
 from fastapi import FastAPI, Depends, HTTPException, status, Response
-import models.models as m
-import modules.hashing as h
-from typing import  Optional, List
-from sqlalchemy.orm import  Session
-# from database.db import engine, SessionLocal
+import models.models as models
+from typing import Optional, List
+from sqlalchemy.orm import Session
+from database.db import get_db
+from routes import users, orders
 
 app = FastAPI()
+
+app.include_router(users.router)
 
 @app.get('/')
 async def index():
