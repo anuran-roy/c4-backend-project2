@@ -2,12 +2,13 @@ from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Float
 from sqlalchemy.sql.sqltypes import Boolean
 from database.db import Base, db
 from sqlalchemy.orm import relationship
+from sqlalchemy.dialects.postgresql import UUID
 import uuid
 
 class City(Base):
 
     __tablename__ = 'city'
-    cityid = Column(Integer, primary_key=True, index=True)
+    cityid = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, index=True)
     cityname = Column(String)
     statename = Column(String)
     # addresses = relationship("City", back_populates="city")
@@ -23,7 +24,7 @@ class City(Base):
 class User(Base):
 
     __tablename__ = 'user'
-    userid = Column(Integer, primary_key=True, index=True)
+    userid = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, index=True)
     name = Column(String)
     contactnum = Column(String)
     email = Column(String)
@@ -43,13 +44,13 @@ class User(Base):
 class Address(Base):
 
     __tablename__ = 'address'
-    addressid = Column(Integer, primary_key=True, index=True)
+    addressid = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, index=True)
     name = Column(String)
     zipcode = Column(Integer)
     currentaddress = Column(String)
     street = Column(String)
-    userid = Column(Integer, ForeignKey('user.userid'))  # Foreign Key
-    cityid = Column(Integer, ForeignKey('city.cityid'))  # Foreign Key
+    userid = Column(UUID(as_uuid=True), ForeignKey('user.userid'))  # Foreign Key
+    cityid = Column(UUID(as_uuid=True), ForeignKey('city.cityid'))  # Foreign Key
 
     def __init__(self,AddressId, Name, ZipCode, CurrentAddress, Street):
         self.addressid = AddressId
@@ -70,11 +71,11 @@ class Restaurant(Base):
 
     __tablename__ = 'restaurant'
 
-    restaurantid = Column(Integer, primary_key=True, index=True)
+    restaurantid = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, index=True)
     address = Column(String)
     rating = Column(Integer)
     zipcode = Column(Integer)
-    cityid = Column(Integer, ForeignKey('city.cityid'))  # Foreign Key
+    cityid = Column(UUID(as_uuid=True), ForeignKey('city.cityid'))  # Foreign Key
 
     def __init__(self, RestaurantId, Address, Rating, Zipcode):
         self.restaurantid = RestaurantId
@@ -93,8 +94,8 @@ class FoodCategory(Base):
 
     __tablename__ = 'foodCategory'
 
-    foodcategoryid = Column(Integer, primary_key=True)
-    restaurantid = Column(Integer, ForeignKey('restaurant.restaurantid'))  # Foreign Key
+    foodcategoryid = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, index=True)
+    restaurantid = Column(UUID(as_uuid=True), ForeignKey('restaurant.restaurantid'))  # Foreign Key
     categoryname = Column(String)
     # restaurant = relationship("Restaurant", back_populates="foodCategories")
     # menus = relationship("Menu", back_populates="foodCategory")
@@ -110,9 +111,9 @@ class Menu(Base):
 
     __tablename__ = 'menu'
 
-    menuid = Column(Integer, primary_key=True)
-    restaurantid = Column(Integer, ForeignKey('restaurant.restaurantid'))  # Foreign Key
-    foodcategoryid = Column(Integer, ForeignKey('foodCategory.foodcategoryid'))  # Foreign Key
+    menuid = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, index=True)
+    restaurantid = Column(UUID(as_uuid=True), ForeignKey('restaurant.restaurantid'))  # Foreign Key
+    foodcategoryid = Column(UUID(as_uuid=True), ForeignKey('foodCategory.foodcategoryid'))  # Foreign Key
     description = Column(String)
     price = Column(Integer)
 
@@ -134,9 +135,9 @@ class Payment(Base):
 
     __tablename__ = 'payment'
 
-    paymentid = Column(Integer, primary_key=True)
-    userid = Column(Integer, ForeignKey('user.userid'))  # Foreign Key
-    orderid = Column(Integer, ForeignKey('order.orderid'))  # Foreign Key
+    paymentid = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, index=True)
+    userid = Column(UUID(as_uuid=True), ForeignKey('user.userid'))  # Foreign Key
+    orderid = Column(UUID(as_uuid=True), ForeignKey('order.orderid'))  # Foreign Key
     amounttobepaid = Column(Float)
     paymentstatus = Column(String)
 
@@ -155,10 +156,10 @@ class Order(Base):
 
     __tablename__ = 'order'
 
-    orderid = Column(Integer, primary_key=True)
-    userid = Column(Integer, ForeignKey('user.userid'))  # Foreign Key
-    restaurantid = Column(Integer, ForeignKey('restaurant.restaurantid'))  # Foreign Key
-    addressid = Column(Integer, ForeignKey('address.addressid'))  # Foreign Key
+    orderid = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, index=True)
+    userid = Column(UUID(as_uuid=True), ForeignKey('user.userid'))  # Foreign Key
+    restaurantid = Column(UUID(as_uuid=True), ForeignKey('restaurant.restaurantid'))  # Foreign Key
+    addressid = Column(UUID(as_uuid=True), ForeignKey('address.addressid'))  # Foreign Key
     orderstatus = Column(String)
     ordertime = Column(DateTime)
     deliverytime = Column(DateTime)
@@ -185,9 +186,9 @@ class ItemsOrdered(Base):
 
     __tablename__ = 'itemsOrdered'
 
-    itemsorderedid = Column(Integer, primary_key=True)
-    orderid = Column(Integer, ForeignKey('order.orderid'))  # Foreign Key
-    menuid = Column(Integer, ForeignKey('menu.menuid'))  # Foreign Key
+    itemsorderedid = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, index=True)
+    orderid = Column(UUID(as_uuid=True), ForeignKey('order.orderid'))  # Foreign Key
+    menuid = Column(UUID(as_uuid=True), ForeignKey('menu.menuid'))  # Foreign Key
 
     quantity = Column(Integer)
 

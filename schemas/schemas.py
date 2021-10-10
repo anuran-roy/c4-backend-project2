@@ -1,29 +1,31 @@
 from pydantic import BaseModel # Base class for request bodies
 from typing import Optional
+from uuid import UUID
 
+################################## Input validation schemas ###################################
 class City(BaseModel):
-    cityid: int
+    cityid: Optional[UUID]
     cityname: str
     statename: str
 
 class User(BaseModel):
-    userid: int
+    userid: Optional[UUID]
     name: str
     contactnum: str
     email: str
 
 class Address(BaseModel):
+    addressid: Optional[UUID]
     title: str
 
     class Config():
         orm_mode = True
 
-# class User(BaseModel):
-#     name: str
-#     username: str
-#     email: str
-#     password: str
+class Order(BaseModel):
+    pass
 
+
+############################################ Output schemas #############################################
 class UserProfile(BaseModel):
     # userId: int
     name: str
@@ -32,3 +34,7 @@ class UserProfile(BaseModel):
 
     class Config():
         orm_mode = True
+
+
+class OrderDetails(BaseModel):
+    pass
