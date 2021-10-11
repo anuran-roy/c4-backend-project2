@@ -3,22 +3,28 @@ from database.db import get_db
 from sqlalchemy.orm import Session
 from schemas import schemas
 from models import models
-from sqlalchemy.dialects.postgresql import UUID
+from uuid import UUID
 
-router = APIRouter(tags=['Users'])
+router = APIRouter(prefix="/user", tags=['Users'])
 
 
-@router.get('/user/{id}', response_model=schemas.User)
-async def get_user(id: str, db: Session = Depends(get_db)):
-    entry = db.query(models.User).filter(models.User.userid == id).first()
-    return entry
+@router.get('/{id}', response_model=schemas.UserProfile)
+async def get_user(id: UUID, db: Session = Depends(get_db)):
+    user = db.query(models.User).filter(models.User.userid == id).first()
+
+    if not user:
+        return HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"User with the id {id} is not found.")
+
+    return user
     # return {"details": f"User #{id}"}
 
 
-@router.post('/createuser', status_code=status.HTTP_201_CREATED)
+@router.post('/add', status_code=status.HTTP_201_CREATED)
 async def create_user(request: schemas.User, db: Session = Depends(get_db)):
-    new_user = models.User(UserId=request.userid, Name=request.name,
+    new_user = models.User(Name=request.name,
                            ContactNum=request.contactnum, Email=request.email)
     db.add(new_user)
     db.commit()
     db.refresh(new_user)
+
+    return {"status": status.HTTP_201_CREATED}

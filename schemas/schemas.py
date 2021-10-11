@@ -1,30 +1,39 @@
-from pydantic import BaseModel # Base class for request bodies
+from pydantic import BaseModel  # Base class for request bodies
+from datetime import datetime
 from typing import Optional
 from uuid import UUID
 
 ################################## Input validation schemas ###################################
+
+
 class City(BaseModel):
-    cityid: Optional[UUID]
+    # cityid: Optional[UUID]
     cityname: str
     statename: str
 
+
 class User(BaseModel):
-    userid: Optional[UUID]
+    # userid: Optional[UUID]
     name: str
     contactnum: str
     email: str
 
+
 class Address(BaseModel):
-    addressid: Optional[UUID]
+    # addressid: Optional[UUID]
     title: str
 
     class Config():
         orm_mode = True
 
+
 class Order(BaseModel):
     pass
 
-
+class Login(BaseModel):
+    email: str
+    password: str
+    
 ############################################ Output schemas #############################################
 class UserProfile(BaseModel):
     # userId: int
@@ -37,4 +46,25 @@ class UserProfile(BaseModel):
 
 
 class OrderDetails(BaseModel):
-    pass
+    orderstatus: str
+    ordertime: datetime
+    deliverytime: datetime
+    totalitems: float
+
+    class Config():
+        orm_mode = True
+
+class RestaurantProfile(BaseModel):
+    address: str
+    rating: int
+    zipcode: int
+
+    class Config():
+        orm_mode = True
+
+class CityDetails(BaseModel):
+    cityname: str
+    statename: str
+
+    class Config():
+        orm_mode = True
