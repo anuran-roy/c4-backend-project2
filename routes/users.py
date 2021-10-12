@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from schemas import schemas
 from models import models
 from uuid import UUID
+from hashing.hashing import getHash
 
 router = APIRouter(prefix="/user", tags=['Users'])
 
@@ -21,10 +22,14 @@ async def get_user(id: UUID, db: Session = Depends(get_db)):
 
 @router.post('/add', status_code=status.HTTP_201_CREATED)
 async def create_user(request: schemas.User, db: Session = Depends(get_db)):
+    sl, pwd = getHash(str(request.password))
     new_user = models.User(Name=request.name,
-                           ContactNum=request.contactnum, Email=request.email)
+                           ContactNum=request.contactnum, Email=request.email,
+                           Password=pwd, Salt=sl)
     db.add(new_user)
     db.commit()
     db.refresh(new_user)
 
-    return {"status": status.HTTP_201_CREATED}
+    return {
+            "status": status.HTTP_201_CREATED
+           }

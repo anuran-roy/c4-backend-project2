@@ -17,6 +17,7 @@ class User(BaseModel):
     name: str
     contactnum: str
     email: str
+    password: str
 
 
 class Address(BaseModel):
@@ -33,7 +34,7 @@ class Order(BaseModel):
 class Login(BaseModel):
     email: str
     password: str
-    
+
 ############################################ Output schemas #############################################
 class UserProfile(BaseModel):
     # userId: int

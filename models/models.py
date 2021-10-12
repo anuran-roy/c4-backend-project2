@@ -30,12 +30,16 @@ class User(Base):
     name = Column(String)
     contactnum = Column(String)
     email = Column(String)
+    passwd = Column(String)
+    salt = Column(String)
 
-    def __init__(self, Name, ContactNum, Email):
+    def __init__(self, Name, ContactNum, Email, Password, Salt):
         self.userid = str(uuid.uuid4())
         self.name = Name
         self.contactnum = ContactNum
         self.email = Email
+        self.passwd = Password
+        self.salt = Salt
 
     # addresses = relationship("Address", back_populates="user")
     # orders = relationship("Order", back_populates="user")
