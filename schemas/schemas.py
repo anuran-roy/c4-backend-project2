@@ -20,6 +20,14 @@ class User(BaseModel):
     password: str
 
 
+class Restaurant(BaseModel):
+    city: str
+    name: str
+    rating: int
+    address: str
+    zipcode: int
+
+
 class Address(BaseModel):
     # addressid: Optional[UUID]
     # addressid

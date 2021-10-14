@@ -90,13 +90,15 @@ class Restaurant(Base):
 
     restaurantid = Column(UUID(as_uuid=True), primary_key=True,
                           default=uuid.uuid4, index=True)
+    name = Column(String)
     address = Column(String)
     rating = Column(Integer)
     zipcode = Column(Integer)
     cityid = Column(UUID(as_uuid=True), ForeignKey('city.cityid'))
 
-    def __init__(self, Address, Rating, Zipcode, city):
+    def __init__(self, Name, Address, Rating, Zipcode, city):
         self.restaurantid = str(uuid.uuid4())
+        self.name = Name
         self.address = Address
         self.rating = Rating
         self.zipcode = Zipcode

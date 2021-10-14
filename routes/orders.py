@@ -45,7 +45,8 @@ async def create_order(request: schemas.Order, db: Session = Depends(get_db),
     user = db.query(models.User).filter(models.User.email == user_jwt["sub"])\
              .first()
 
-    # new_order = models.Order(OrderStatus="preparing", OrderTime=str(datetime.now()), )
+    # new_order = models.Order(OrderStatus="preparing",
+    #                          OrderTime=str(datetime.now()), )
     db.add(new_order)
     db.commit()
     db.refresh(new_order)
@@ -58,7 +59,7 @@ async def create_order(request: schemas.Order, db: Session = Depends(get_db),
 
 @router.get('/history', status_code=status.HTTP_200_OK)
 async def get_order_history(db: Session = Depends(get_db),
-                            user_jwt: schemas.User = 
+                            user_jwt: schemas.User =
                             Depends(oauth2.get_current_user)):
 
     if user_jwt is None:
@@ -70,7 +71,7 @@ async def get_order_history(db: Session = Depends(get_db),
 
     user = db.query(models.User).filter(models.User.email == user_jwt["sub"])\
              .first()
-    
+
     if user is None:
         raise HTTPException(
                             status_code=status.HTTP_404_NOT_FOUND,
