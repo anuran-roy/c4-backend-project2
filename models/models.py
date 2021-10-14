@@ -63,16 +63,16 @@ class Address(Base):
                        default=uuid.uuid4, index=True)
     name = Column(String)
     zipcode = Column(Integer)
-    currentaddress = Column(String)
+    # currentaddress = Column(String)
     street = Column(String)
     userid = Column(UUID(as_uuid=True), ForeignKey('user.userid'))
     cityid = Column(UUID(as_uuid=True), ForeignKey('city.cityid'))
 
-    def __init__(self, Name, ZipCode, CurrentAddress, Street, user, city):
+    def __init__(self, Name, ZipCode, Street, user, city):
         self.addressid = str(uuid.uuid4())
         self.name = Name
         self.zipcode = ZipCode
-        self.currentaddress = CurrentAddress
+        # self.currentaddress = CurrentAddress
         self.street = Street
         self.userid = user.userid
         self.cityid = city.cityid

@@ -22,7 +22,13 @@ class User(BaseModel):
 
 class Address(BaseModel):
     # addressid: Optional[UUID]
-    title: str
+    # addressid
+    name: str
+    zipcode: str
+    currentaddress: str
+    street: str
+    # userid: UUID
+    city: str
 
     class Config():
         orm_mode = True
@@ -93,3 +99,7 @@ class Token(BaseModel):
 
 class TokenData(BaseModel):
     email: Optional[str] = None
+
+
+class UserInDB(User):
+    hashed_password: str

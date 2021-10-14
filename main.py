@@ -1,5 +1,12 @@
 from fastapi import FastAPI
-from routes import users, orders, restaurants, cities, auth
+from routes import (
+    auth,
+    users,
+    orders,
+    restaurants,
+    cities,
+    addresses
+)
 
 app = FastAPI()
 
@@ -8,6 +15,7 @@ app.include_router(users.router)
 app.include_router(orders.router)
 app.include_router(restaurants.router)
 app.include_router(cities.router)
+app.include_router(addresses.router)
 
 
 @app.get('/', tags=["CheckServerStatus"])
