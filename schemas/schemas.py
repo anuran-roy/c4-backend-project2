@@ -3,7 +3,7 @@ from datetime import datetime
 from typing import Optional
 from uuid import UUID
 
-################################## Input validation schemas ###################################
+# Input validation schemas ###################################
 
 
 class City(BaseModel):
@@ -41,11 +41,14 @@ class Order(BaseModel):
     class Config():
         orm_mode = True
 
+
 class Login(BaseModel):
     email: str
     password: str
 
-############################################ Output schemas #############################################
+# Output schemas #############################################
+
+
 class UserProfile(BaseModel):
     # userId: int
     name: str
@@ -65,6 +68,7 @@ class OrderDetails(BaseModel):
     class Config():
         orm_mode = True
 
+
 class RestaurantProfile(BaseModel):
     address: str
     rating: int
@@ -73,12 +77,14 @@ class RestaurantProfile(BaseModel):
     class Config():
         orm_mode = True
 
+
 class CityDetails(BaseModel):
     cityname: str
     statename: str
 
     class Config():
         orm_mode = True
+
 
 class Token(BaseModel):
     access_token: str

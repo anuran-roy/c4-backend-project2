@@ -3,7 +3,7 @@ from typing import Optional
 # from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jose import JWTError, jwt
 # from pydantic import BaseModel
-from schemas import schemas
+# from schemas import schemas
 from routes import users
 from fastapi import HTTPException, status
 
@@ -23,18 +23,20 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     return encoded_jwt
 
 
-def verify_token(token: str, credentials_exception = HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Could not validate credentials",
-        headers={"WWW-Authenticate": "Bearer"},
-    )):
+def verify_token(token: str,
+                 credentials_exception=HTTPException(
+                              status_code=status.HTTP_401_UNAUTHORIZED,
+                              detail="Could not validate credentials",
+                              headers={"WWW-Authenticate": "Bearer"},
+                                                    )
+                 ):
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         email: str = payload.get("sub")
         if email is None:
             raise credentials_exception
 
-        token_data = schemas.TokenData(email=email)
+        # token_data = schemas.TokenData(email=email)
 
         user = users.get_user_by_details(email)
 

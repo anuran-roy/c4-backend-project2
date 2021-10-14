@@ -1,9 +1,18 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Float, LargeBinary
-from sqlalchemy.sql.sqltypes import Boolean
+from sqlalchemy import (
+    Column,
+    Integer,
+    String,
+    ForeignKey,
+    DateTime,
+    Float,
+    LargeBinary
+)
+# from sqlalchemy.sql.sqltypes import Boolean
 from database.db import Base, db
-from sqlalchemy.orm import relationship
+# from sqlalchemy.orm import relationship
 from sqlalchemy.dialects.postgresql import UUID
 import uuid
+
 
 class City(Base):
 
@@ -71,7 +80,8 @@ class Address(Base):
     # user = relationship("User", back_populates="addresses")
     # city = relationship("City", back_populates="addresses")
     # orders = relationship("Order", back_populates="address")
-    # One towards order. So 2 incoming connections (requires Foreign Key), 1 outgoing.
+    # One towards order. So 2 incoming connections (requires Foreign Key),
+    # 1 outgoing.
 
 
 class Restaurant(Base):
@@ -85,7 +95,7 @@ class Restaurant(Base):
     zipcode = Column(Integer)
     cityid = Column(UUID(as_uuid=True), ForeignKey('city.cityid'))
 
-    def __init__(self, Address, Rating, Zipcode):
+    def __init__(self, Address, Rating, Zipcode, city):
         self.restaurantid = str(uuid.uuid4())
         self.address = Address
         self.rating = Rating
@@ -93,7 +103,8 @@ class Restaurant(Base):
         self.cityid = city.cityid
     # city = relationship("City", back_populates="restaurants")
     # menus = relationship("Menu", back_populates="restaurant")
-    # foodCategories = relationship("FoodCategory", back_populates="restaurant")
+    # foodCategories = relationship("FoodCategory",
+    # back_populates="restaurant")
     # orders = relationship("Order", back_populates="restaurant")
     # 3 outgoing connections, 1 incoming from city (requires Foreign Key)
 
@@ -111,7 +122,7 @@ class FoodCategory(Base):
     # menus = relationship("Menu", back_populates="foodCategory")
     # 1 incoming, 1 outgoing connection
 
-    def __init__(self, CategoryName):
+    def __init__(self, CategoryName, restaurant):
         self.foodcategoryid = str(uuid.uuid4())
         self.categoryname = CategoryName
         self.restaurantid = restaurant.restaurantid
@@ -130,7 +141,7 @@ class Menu(Base):
     description = Column(String)
     price = Column(Integer)
 
-    def __init__(self, Description, Price):
+    def __init__(self, Description, Price, restaurant, foodCategory):
         self.menuid = str(uuid.uuid4())
         self.restaurantid = restaurant.restaurantid
         self.foodcategoryid = foodCategory.foodcategoryid
@@ -141,7 +152,7 @@ class Menu(Base):
     # foodCategory = relationship("FoodCategory", back_populates="menus")
     # menu = relationship("ItemsOrdered", back_populates="items")
     # prices = relationship("ItemsOrdered", back_populates="itemsPrice")
-    #2 incoming (requires foreign key), 2 outgoing.
+    # 2 incoming (requires foreign key), 2 outgoing.
 
 
 class Payment(Base):
@@ -155,7 +166,7 @@ class Payment(Base):
     amounttobepaid = Column(Float)
     paymentstatus = Column(String)
 
-    def __init__(self, AmountToBePaid, PaymentStatus):
+    def __init__(self, AmountToBePaid, PaymentStatus, user, order):
         self.paymentid = str(uuid.uuid4())
         self.userid = user.userid
         self.orderid = order.orderid
@@ -211,7 +222,7 @@ class ItemsOrdered(Base):
 
     quantity = Column(Integer)
 
-    def __init__(self):
+    def __init__(self, order, menu):
         self.itemsorderedid = str(uuid.uuid4())
         self.orderid = order.orderid
         self.menuid = menu.menuid
@@ -220,10 +231,10 @@ class ItemsOrdered(Base):
     # menu = relationship("")
     # 3 incoming, 1 outgoing
 
-########################### Defining Relationships ###########################
+# Defining Relationships ###########################
 
 
+# Reflecting the changes in DB ###########################
 
-########################### Reflecting the changes in DB ###########################
 
 Base.metadata.create_all(db)

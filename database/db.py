@@ -10,6 +10,7 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=db)
 
 Base = declarative_base()
 
+
 def get_db():
     db = SessionLocal()
 

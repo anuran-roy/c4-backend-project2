@@ -7,6 +7,7 @@ from uuid import UUID
 
 router = APIRouter(prefix="/city", tags=['Cities'])
 
+
 @router.get('/id/{id}', status_code=status.HTTP_200_OK)
 async def get_city_by_id(id: UUID, db: Session = Depends(get_db)):
     city = db.query(models.City).filter(models.City.cityid == id).first()
@@ -27,6 +28,7 @@ async def get_city_by_name(name: str, db: Session = Depends(get_db)):
                              detail=f"City with name {name} not found")
 
     return city
+
 
 @router.post('/add', status_code=status.HTTP_201_CREATED)
 async def add_city(request: schemas.City, db: Session = Depends(get_db)):

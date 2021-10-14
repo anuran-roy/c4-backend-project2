@@ -5,7 +5,7 @@ from schemas import schemas
 from models import models
 from uuid import UUID
 from auth import oauth2
-from fastapi.security import OAuth2PasswordBearer
+# from fastapi.security import OAuth2PasswordBearer
 
 router = APIRouter(tags=['Orders'])
 
@@ -26,15 +26,15 @@ async def get_user(id: UUID, db: Session = Depends(get_db),
 
 @router.post('/makeorder', status_code=status.HTTP_201_CREATED)
 async def create_order(request: schemas.Order, db: Session = Depends(get_db),
-                      user: schemas.User = Depends(oauth2.get_current_user)):
+                       user: schemas.User = Depends(oauth2.get_current_user)):
     user = oauth2.get_current_user(request.token)
 
     if not user:
         raise HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Could not validate credentials",
-        headers={"WWW-Authenticate": "Bearer"},
-    )
+                            status_code=status.HTTP_401_UNAUTHORIZED,
+                            detail="Could not validate credentials",
+                            headers={"WWW-Authenticate": "Bearer"},
+                           )
 
     # new_order = models.Order(OrderStatus="preparing", OrderTime=)
     # db.add(new_order)
