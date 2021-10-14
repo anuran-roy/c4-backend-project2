@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Float
+from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Float, LargeBinary
 from sqlalchemy.sql.sqltypes import Boolean
 from database.db import Base, db
 from sqlalchemy.orm import relationship
@@ -29,9 +29,9 @@ class User(Base):
                     index=True)
     name = Column(String)
     contactnum = Column(String)
-    email = Column(String)
-    passwd = Column(String)
-    salt = Column(String)
+    email = Column(String, unique=True)
+    passwd = Column(LargeBinary)
+    salt = Column(LargeBinary)
 
     def __init__(self, Name, ContactNum, Email, Password, Salt):
         self.userid = str(uuid.uuid4())
@@ -59,7 +59,7 @@ class Address(Base):
     userid = Column(UUID(as_uuid=True), ForeignKey('user.userid'))
     cityid = Column(UUID(as_uuid=True), ForeignKey('city.cityid'))
 
-    def __init__(self, Name, ZipCode, CurrentAddress, Street):
+    def __init__(self, Name, ZipCode, CurrentAddress, Street, user, city):
         self.addressid = str(uuid.uuid4())
         self.name = Name
         self.zipcode = ZipCode
@@ -182,7 +182,7 @@ class Order(Base):
     totalitems = Column(Float)
 
     def __init__(self, OrderStatus, OrderTime, DeliveryTime,
-                 TotalItems):
+                 TotalItems, restaurant, address, user):
         self.orderid = str(uuid.uuid4())
         self.restaurantid = restaurant.restaurantid
         self.addressid = address.addressid
@@ -190,6 +190,7 @@ class Order(Base):
         self.ordertime = OrderTime
         self.deliverytime = DeliveryTime
         self.totalitems = TotalItems
+        self.userid = user.userid
 
     # user = relationship("User", back_populates="orders")
     # restaurant = relationship("Restaurant", back_populates="orders")

@@ -29,7 +29,17 @@ class Address(BaseModel):
 
 
 class Order(BaseModel):
-    pass
+    # self.orderid: UUID
+    token: str
+    restaurantid: UUID
+    addressid: UUID
+    orderstatus: str
+    ordertime: str
+    deliverytime: str
+    totalitems: int
+
+    class Config():
+        orm_mode = True
 
 class Login(BaseModel):
     email: str
@@ -69,3 +79,11 @@ class CityDetails(BaseModel):
 
     class Config():
         orm_mode = True
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+
+class TokenData(BaseModel):
+    email: Optional[str] = None
