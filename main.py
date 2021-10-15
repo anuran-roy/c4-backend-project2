@@ -5,7 +5,9 @@ from routes import (
     orders,
     restaurants,
     cities,
-    addresses
+    addresses,
+    items,
+    payments
 )
 
 app = FastAPI()
@@ -16,6 +18,8 @@ app.include_router(orders.router)
 app.include_router(restaurants.router)
 app.include_router(cities.router)
 app.include_router(addresses.router)
+app.include_router(items.router)
+app.include_router(payments.router)
 
 
 @app.get('/', tags=["CheckServerStatus"])

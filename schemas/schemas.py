@@ -45,15 +45,55 @@ class Address(BaseModel):
 class Order(BaseModel):
     # self.orderid: UUID
     token: str
-    restaurantid: UUID
-    addressid: UUID
-    orderstatus: str
-    ordertime: str
-    deliverytime: str
+    restaurant: str
+    address: str
+    # orderstatus: str
+    # ordertime: str
+    # deliverytime: str
     totalitems: int
 
     class Config():
         orm_mode = True
+
+
+class Items(BaseModel):
+    pass
+
+    class Config:
+        orm_mode = True
+
+
+class FoodCategory(BaseModel):
+    name: str
+    restaurant: str
+
+    class Config:
+        orm_mode = True
+
+
+class Menu(BaseModel):
+    # menuid: UUID
+    restaurantid: UUID
+    foodcategoryid: UUID
+    description: str
+    price: int
+
+    class Config:
+        orm_mode = True
+
+
+class ItemsOrdered(BaseModel):
+    # itemsor
+    orderid: UUID
+    menuid: UUID
+
+    class Config:
+        orm_mode = True
+
+
+class Payment(BaseModel):
+    orderid: UUID
+    # paymentstatus: str
 
 
 class Login(BaseModel):

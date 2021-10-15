@@ -6,7 +6,7 @@ from models import models
 from uuid import UUID
 from auth import oauth2
 # from fastapi.security import OAuth2PasswordBearer
-from datetime import datetime
+from datetime import datetime, timedelta
 
 
 router = APIRouter(tags=['Orders'],
@@ -45,15 +45,31 @@ async def create_order(request: schemas.Order, db: Session = Depends(get_db),
     user = db.query(models.User).filter(models.User.email == user_jwt["sub"])\
              .first()
 
-    # new_order = models.Order(OrderStatus="preparing",
-    #                          OrderTime=str(datetime.now()), )
+    restaurant = db.query(models.Restaurant)\
+                   .filter(models.Restaurant.name == request.restaurant)\
+                   .first()
+
+    address = db.query(models.Address)\
+                .filter(models.Address.name == request.address).first()
+
+    new_order = models.Order(OrderStatus="preparing",
+                             OrderTime=str(datetime.now()),
+                             DeliveryTime=str(
+                                 datetime.now()+timedelta(minutes=30)
+                                 ),
+                             restaurant=restaurant,
+                             address=address,
+                             user=user,
+                             TotalItems=request.totalitems
+                             )
     db.add(new_order)
     db.commit()
     db.refresh(new_order)
 
     return {
             "status": status.HTTP_201_CREATED,
-            "user": user.userid
+            "user": user,
+            "order": new_order
            }
 
 
@@ -61,7 +77,6 @@ async def create_order(request: schemas.Order, db: Session = Depends(get_db),
 async def get_order_history(db: Session = Depends(get_db),
                             user_jwt: schemas.User =
                             Depends(oauth2.get_current_user)):
-
     if user_jwt is None:
         raise HTTPException(
                             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -83,3 +98,10 @@ async def get_order_history(db: Session = Depends(get_db),
                       .all()
 
     return {"Order history": order_history}
+
+
+@router.post("/additems", status_code=status.HTTP_201_CREATED)
+async def additems(request,
+                   db: Session = Depends(get_db),
+                   user_jwt: schemas.User = Depends(oauth2.get_current_user)):
+    pass

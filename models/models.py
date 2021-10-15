@@ -164,7 +164,8 @@ class Payment(Base):
     paymentid = Column(UUID(as_uuid=True), primary_key=True,
                        default=uuid.uuid4, index=True)
     userid = Column(UUID(as_uuid=True), ForeignKey('user.userid'))
-    orderid = Column(UUID(as_uuid=True), ForeignKey('order.orderid'))
+    orderid = Column(UUID(as_uuid=True), ForeignKey('order.orderid'),
+                     unique=True)
     amounttobepaid = Column(Float)
     paymentstatus = Column(String)
 
