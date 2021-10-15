@@ -1,14 +1,8 @@
-from sqlalchemy import (
-    Column,
-    Integer,
-    String,
-    ForeignKey,
-    DateTime,
-    Float,
-    LargeBinary
-)
+from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Float, LargeBinary
+
 # from sqlalchemy.sql.sqltypes import Boolean
 from database.db import Base, db
+
 # from sqlalchemy.orm import relationship
 from sqlalchemy.dialects.postgresql import UUID
 import uuid
@@ -16,9 +10,10 @@ import uuid
 
 class City(Base):
 
-    __tablename__ = 'city'
-    cityid = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4,
-                    index=True)
+    __tablename__ = "city"
+    cityid = Column(
+        UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, index=True
+    )
     cityname = Column(String)
     statename = Column(String)
     # addresses = relationship("City", back_populates="city")
@@ -33,9 +28,10 @@ class City(Base):
 
 class User(Base):
 
-    __tablename__ = 'user'
-    userid = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4,
-                    index=True)
+    __tablename__ = "user"
+    userid = Column(
+        UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, index=True
+    )
     name = Column(String)
     contactnum = Column(String)
     email = Column(String, unique=True)
@@ -58,15 +54,16 @@ class User(Base):
 
 class Address(Base):
 
-    __tablename__ = 'address'
-    addressid = Column(UUID(as_uuid=True), primary_key=True,
-                       default=uuid.uuid4, index=True)
+    __tablename__ = "address"
+    addressid = Column(
+        UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, index=True
+    )
     name = Column(String)
     zipcode = Column(Integer)
     # currentaddress = Column(String)
     street = Column(String)
-    userid = Column(UUID(as_uuid=True), ForeignKey('user.userid'))
-    cityid = Column(UUID(as_uuid=True), ForeignKey('city.cityid'))
+    userid = Column(UUID(as_uuid=True), ForeignKey("user.userid"))
+    cityid = Column(UUID(as_uuid=True), ForeignKey("city.cityid"))
 
     def __init__(self, Name, ZipCode, Street, user, city):
         self.addressid = str(uuid.uuid4())
@@ -86,15 +83,16 @@ class Address(Base):
 
 class Restaurant(Base):
 
-    __tablename__ = 'restaurant'
+    __tablename__ = "restaurant"
 
-    restaurantid = Column(UUID(as_uuid=True), primary_key=True,
-                          default=uuid.uuid4, index=True)
+    restaurantid = Column(
+        UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, index=True
+    )
     name = Column(String)
     address = Column(String)
     rating = Column(Integer)
     zipcode = Column(Integer)
-    cityid = Column(UUID(as_uuid=True), ForeignKey('city.cityid'))
+    cityid = Column(UUID(as_uuid=True), ForeignKey("city.cityid"))
 
     def __init__(self, Name, Address, Rating, Zipcode, city):
         self.restaurantid = str(uuid.uuid4())
@@ -103,6 +101,7 @@ class Restaurant(Base):
         self.rating = Rating
         self.zipcode = Zipcode
         self.cityid = city.cityid
+
     # city = relationship("City", back_populates="restaurants")
     # menus = relationship("Menu", back_populates="restaurant")
     # foodCategories = relationship("FoodCategory",
@@ -113,12 +112,14 @@ class Restaurant(Base):
 
 class FoodCategory(Base):
 
-    __tablename__ = 'foodCategory'
+    __tablename__ = "foodCategory"
 
-    foodcategoryid = Column(UUID(as_uuid=True), primary_key=True,
-                            default=uuid.uuid4, index=True)
-    restaurantid = Column(UUID(as_uuid=True),
-                          ForeignKey('restaurant.restaurantid'))  # Foreign Key
+    foodcategoryid = Column(
+        UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, index=True
+    )
+    restaurantid = Column(
+        UUID(as_uuid=True), ForeignKey("restaurant.restaurantid")
+    )  # Foreign Key
     categoryname = Column(String)
     # restaurant = relationship("Restaurant", back_populates="foodCategories")
     # menus = relationship("Menu", back_populates="foodCategory")
@@ -132,14 +133,15 @@ class FoodCategory(Base):
 
 class Menu(Base):
 
-    __tablename__ = 'menu'
+    __tablename__ = "menu"
 
-    menuid = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4,
-                    index=True)
-    restaurantid = Column(UUID(as_uuid=True),
-                          ForeignKey('restaurant.restaurantid'))
-    foodcategoryid = Column(UUID(as_uuid=True),
-                            ForeignKey('foodCategory.foodcategoryid'))
+    menuid = Column(
+        UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, index=True
+    )
+    restaurantid = Column(UUID(as_uuid=True), ForeignKey("restaurant.restaurantid"))
+    foodcategoryid = Column(
+        UUID(as_uuid=True), ForeignKey("foodCategory.foodcategoryid")
+    )
     description = Column(String)
     price = Column(Integer)
 
@@ -159,13 +161,13 @@ class Menu(Base):
 
 class Payment(Base):
 
-    __tablename__ = 'payment'
+    __tablename__ = "payment"
 
-    paymentid = Column(UUID(as_uuid=True), primary_key=True,
-                       default=uuid.uuid4, index=True)
-    userid = Column(UUID(as_uuid=True), ForeignKey('user.userid'))
-    orderid = Column(UUID(as_uuid=True), ForeignKey('order.orderid'),
-                     unique=True)
+    paymentid = Column(
+        UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, index=True
+    )
+    userid = Column(UUID(as_uuid=True), ForeignKey("user.userid"))
+    orderid = Column(UUID(as_uuid=True), ForeignKey("order.orderid"), unique=True)
     amounttobepaid = Column(Float)
     paymentstatus = Column(String)
 
@@ -175,6 +177,7 @@ class Payment(Base):
         self.orderid = order.orderid
         self.amounttobepaid = AmountToBePaid
         self.paymentstatus = PaymentStatus
+
     # user = relationship('User', back_populates="payments")
     # correspondingOrder = relationship("Order", back_populates="payment")
     # 1 incoming, 1 outgoing
@@ -182,21 +185,29 @@ class Payment(Base):
 
 class Order(Base):
 
-    __tablename__ = 'order'
+    __tablename__ = "order"
 
-    orderid = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4,
-                     index=True)
-    userid = Column(UUID(as_uuid=True), ForeignKey('user.userid'))
-    restaurantid = Column(UUID(as_uuid=True),
-                          ForeignKey('restaurant.restaurantid'))
-    addressid = Column(UUID(as_uuid=True), ForeignKey('address.addressid'))
+    orderid = Column(
+        UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, index=True
+    )
+    userid = Column(UUID(as_uuid=True), ForeignKey("user.userid"))
+    restaurantid = Column(UUID(as_uuid=True), ForeignKey("restaurant.restaurantid"))
+    addressid = Column(UUID(as_uuid=True), ForeignKey("address.addressid"))
     orderstatus = Column(String)
     ordertime = Column(DateTime)
     deliverytime = Column(DateTime)
     totalitems = Column(Float)
 
-    def __init__(self, OrderStatus, OrderTime, DeliveryTime,
-                 TotalItems, restaurant, address, user):
+    def __init__(
+        self,
+        OrderStatus,
+        OrderTime,
+        DeliveryTime,
+        TotalItems,
+        restaurant,
+        address,
+        user,
+    ):
         self.orderid = str(uuid.uuid4())
         self.restaurantid = restaurant.restaurantid
         self.addressid = address.addressid
@@ -216,12 +227,13 @@ class Order(Base):
 
 class ItemsOrdered(Base):
 
-    __tablename__ = 'itemsOrdered'
+    __tablename__ = "itemsOrdered"
 
-    itemsorderedid = Column(UUID(as_uuid=True), primary_key=True,
-                            default=uuid.uuid4, index=True)
-    orderid = Column(UUID(as_uuid=True), ForeignKey('order.orderid'))
-    menuid = Column(UUID(as_uuid=True), ForeignKey('menu.menuid'))
+    itemsorderedid = Column(
+        UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, index=True
+    )
+    orderid = Column(UUID(as_uuid=True), ForeignKey("order.orderid"))
+    menuid = Column(UUID(as_uuid=True), ForeignKey("menu.menuid"))
 
     quantity = Column(Integer)
 
@@ -229,10 +241,12 @@ class ItemsOrdered(Base):
         self.itemsorderedid = str(uuid.uuid4())
         self.orderid = order.orderid
         self.menuid = menu.menuid
+
     # prices = relationship("Menu", back_populates="price")
     # orders = relationship("Order", back_populates="itemsOrdered")
     # menu = relationship("")
     # 3 incoming, 1 outgoing
+
 
 # Defining Relationships ###########################
 

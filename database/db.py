@@ -1,8 +1,9 @@
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+from decouple import config
 
-DB_PATH = "postgresql://postgres:password@127.0.0.1:5432/c4_backend_project2"
+DB_PATH = config('DB_PATH')
 
 db = create_engine(DB_PATH)
 

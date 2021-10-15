@@ -38,7 +38,7 @@ class Address(BaseModel):
     # userid: UUID
     city: str
 
-    class Config():
+    class Config:
         orm_mode = True
 
 
@@ -52,7 +52,7 @@ class Order(BaseModel):
     # deliverytime: str
     totalitems: int
 
-    class Config():
+    class Config:
         orm_mode = True
 
 
@@ -100,6 +100,7 @@ class Login(BaseModel):
     email: str
     password: str
 
+
 # Output schemas #############################################
 
 
@@ -109,7 +110,7 @@ class UserProfile(BaseModel):
     contactnum: str
     email: str
 
-    class Config():
+    class Config:
         orm_mode = True
 
 
@@ -119,7 +120,7 @@ class OrderDetails(BaseModel):
     deliverytime: datetime
     totalitems: float
 
-    class Config():
+    class Config:
         orm_mode = True
 
 
@@ -128,7 +129,7 @@ class RestaurantProfile(BaseModel):
     rating: int
     zipcode: int
 
-    class Config():
+    class Config:
         orm_mode = True
 
 
@@ -136,7 +137,7 @@ class CityDetails(BaseModel):
     cityname: str
     statename: str
 
-    class Config():
+    class Config:
         orm_mode = True
 
 
