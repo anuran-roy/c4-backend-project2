@@ -16,7 +16,7 @@ router = APIRouter(tags=["Orders"], prefix="/orders")
 @router.get(
     "/order/{id}", status_code=status.HTTP_200_OK, response_model=schemas.OrderDetails
 )
-async def get_user(
+async def get_order_by_id(
     id: UUID,
     db: Session = Depends(get_db),
     user: schemas.User = Depends(oauth2.get_current_user),
@@ -24,7 +24,7 @@ async def get_user(
     order = db.query(models.Order).filter(models.Order.orderid == id).first()
 
     if not order:
-        return HTTPException(
+        raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Order with id {id} not found.",
         )
@@ -53,12 +53,12 @@ async def create_order(
 
     restaurant = (
         db.query(models.Restaurant)
-        .filter(models.Restaurant.name == request.restaurant)
+        .filter(models.Restaurant.restaurantid == request.restaurant_id)
         .first()
     )
 
     address = (
-        db.query(models.Address).filter(models.Address.name == request.address).first()
+        db.query(models.Address).filter(models.Address.addressid == request.customer_address_id).first()
     )
 
     new_order = models.Order(

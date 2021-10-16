@@ -40,6 +40,7 @@ async def login(
     access_token = tokengen.create_access_token(
         data={"sub": user.email}, expires_delta=access_token_expires
     )
+    print(f"\n\nAccess token = {access_token}\n\n")
     return {"access_token": access_token, "token_type": "bearer"}
 
     # return {

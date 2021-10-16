@@ -44,9 +44,8 @@ class Address(BaseModel):
 
 class Order(BaseModel):
     # self.orderid: UUID
-    token: str
-    restaurant: str
-    address: str
+    restaurant_id: UUID
+    customer_address_id: UUID
     # orderstatus: str
     # ordertime: str
     # deliverytime: str

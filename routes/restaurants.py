@@ -72,3 +72,8 @@ async def add_restaurant(
     db.add(new_restaurant)
     db.commit()
     db.refresh(new_restaurant)
+
+    return {
+        "status": status.HTTP_201_CREATED,
+        "restaurant": new_restaurant
+    }
