@@ -3,7 +3,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from decouple import config
 
-DB_PATH = config('DB_PATH')
+DB_PATH = config("DB_PATH")
 
 db = create_engine(DB_PATH)
 

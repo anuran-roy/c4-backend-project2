@@ -58,7 +58,9 @@ async def create_order(
     )
 
     address = (
-        db.query(models.Address).filter(models.Address.addressid == request.customer_address_id).first()
+        db.query(models.Address)
+        .filter(models.Address.addressid == request.customer_address_id)
+        .first()
     )
 
     new_order = models.Order(
