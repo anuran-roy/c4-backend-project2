@@ -61,14 +61,9 @@ def make_payment(
     )
 
     # menus = list()
-    tprice = 0
-
-    for i in items:
-        # menus.append(db.query(models.Menu)\
-        #      .filter(models.Menu.orderid == i.menuid).first())
-        tprice += (
+    tprice = sum((
             db.query(models.Menu).filter(models.Menu.menuid == i.menuid).first()
-        ).price
+        ).price for i in items)
 
     new_payment = models.Payment(
         user=user, order=order, AmountToBePaid=tprice, PaymentStatus="unpaid"
