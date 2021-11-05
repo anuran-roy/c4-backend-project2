@@ -40,26 +40,3 @@ def get_user_by_details(email_or_phno: str, db: Session = Depends(get_db)):
         )
 
     return user
-
-    # @router.get('/{phone}', response_model=schemas.UserProfile)
-    # async def get_user(phone: str, db: Session = Depends(get_db)):
-    #     user = db.query(models.User).filter(models.User.email == email).first()
-
-    #     if not user:
-    #         return HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-    #                              detail=f"User with the id {id} is not found.")
-
-    #     return user
-
-    # @router.post('/add', status_code=status.HTTP_201_CREATED)
-    # async def create_user(request: schemas.User, db: Session = Depends(get_db)):
-    #     sl, pwd = getHash(request.password)
-    #     new_user = models.User(Name=request.name,
-    #                            ContactNum=request.contactnum,
-    #                            Email=request.email,
-    #                            Password=pwd, Salt=sl)
-    #     db.add(new_user)
-    #     db.commit()
-    #     db.refresh(new_user)
-
-    return {"status": status.HTTP_201_CREATED}
